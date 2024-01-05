@@ -3,6 +3,9 @@ import { useState } from "react";
 import Logo from "../../public/Afnan Recipes.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import CryptoJS from "crypto-js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const router = useRouter();
@@ -10,6 +13,21 @@ const Login = () => {
   const [password, sePassword] = useState("");
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
+
+  var cipherEmail: any = process.env.NEXT_PUBLIC_VALIDATE_EMAIL;
+  var cipherPass: any = process.env.NEXT_PUBLIC_VALIDATE_PASSWORD;
+
+  var bytes = CryptoJS.AES.decrypt(
+    cipherEmail,
+    process.env.NEXT_PUBLIC_SECERT_KEY as string
+  );
+  var DecryptEmail = bytes.toString(CryptoJS.enc.Utf8);
+
+  var bytes1 = CryptoJS.AES.decrypt(
+    cipherPass,
+    process.env.NEXT_PUBLIC_SECERT_KEY as string
+  );
+  var DecryptPass = bytes1.toString(CryptoJS.enc.Utf8);
 
   const handelSubmit = (e: any) => {
     e.preventDefault();
@@ -21,11 +39,16 @@ const Login = () => {
     } else if (!password) {
       setErrorPass(true);
     } else {
-      router.push("/approval");
+      if (email === DecryptEmail && password == DecryptPass) {
+        router.push("/approval");
+      } else {
+        toast.error("invalid credentials");
+      }
     }
   };
   return (
     <>
+      <ToastContainer />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image

@@ -1,0 +1,15 @@
+{
+  "hosting": {
+    "headers": [
+      {
+        "source": "/videos/**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ]
+  }
+}

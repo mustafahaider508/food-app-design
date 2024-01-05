@@ -1,48 +1,44 @@
-import React from "react";
+// pages/approval.js
+"use client";
+import React, { useEffect, useState } from "react";
 import Right from "../../public/right.png";
 import Image from "next/image";
 import Logo from "../../public/Afnan Recipes.png";
-import Content from "../../public/Rectangle 49.png";
 import Tick from "../../public/tick.png";
 import Cross from "../../public/Cross.png";
+import { collection, getDocs } from "firebase/firestore";
+import db from "../../db";
+import VideoThumbnail from "../components/VideoThumbnail";
+import VideoThumbnails from "../components/VideoThumbnail";
+import VideoThumbnailComp from "../components/VideoThumbnail";
 
-function Approval() {
-  const approvalData = [
-    {
-      user: "Ben Afleck",
-      content: Content,
-      description:
-        "Video 05:35 Fried Crispy Chips with garlic sauce and pinch of mustard",
-    },
-    {
-      user: "Ben Afleck",
-      content: Content,
-      description:
-        "Video 05:35 Fried Crispy Chips with garlic sauce and pinch of mustard",
-    },
-    {
-      user: "Ben Afleck",
-      content: Content,
-      description:
-        "Video 05:35 Fried Crispy Chips with garlic sauce and pinch of mustard",
-    },
-    {
-      user: "Ben Afleck",
-      content: Content,
-      description:
-        "Video 05:35 Fried Crispy Chips with garlic sauce and pinch of mustard",
-    },
-  ];
+const Approval = () => {
+  const [reels, setReels] = useState([]);
+
+  const handleReels = async () => {
+    try {
+      const docSnap = await getDocs(collection(db, "Reels"));
+      const data: any = docSnap.docs.map((doc) => doc.data());
+      setReels(data);
+    } catch (error: any) {
+      console.error("Error connecting to Firestore:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    handleReels();
+  }, []);
+
+  console.log("reels", reels);
 
   return (
     <div>
       <div className="relative">
         <div className="py-6 px-8">
-          {" "}
-          <Image className=" w-[300px]" src={Logo} alt="img" />
+          <Image className="w-[300px]" src={Logo} alt="img" />
           <p className="font-[600] py-2 text-[18px]">Upload Permissions</p>
         </div>
-        <div className="hidden md:block absolute  right-0 top-0">
+        <div className="hidden md:block absolute right-0 top-0">
           <Image className="w-full" src={Right} alt="img" />
         </div>
       </div>
@@ -82,25 +78,26 @@ function Approval() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {approvalData.map((ele: any, index: number) => (
+                    {reels.map((ele: any, index: number) => (
                       <tr key={index}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {ele.user}
+                          {ele.user_name == null ? "No Name" : ele.user_name}
+                        </td>
+                        <td className="whitespace-nowrap  cursor-pointer px-3 py-4 text-sm text-gray-500">
+                          <video
+                            id="video1"
+                            width="50"
+                            height="50"
+                            className=" bg-slate-300 "
+                          >
+                            <source src={ele.video_url} type="video/mp4" />
+                          </video>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <Image
-                            className="w-[80px]"
-                            src={ele.content}
-                            alt="img"
-                          />
+                          {ele.caption}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {ele.description?.slice(0, 5)} <br />
-                          {ele.description?.slice(5, 10)} <br />
-                          {ele.description?.slice(10)}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <div className="flex items-center gap-6 ">
+                          <div className="flex items-center lg:gap-6 xl:gap-[40px]">
                             <Image
                               className="w-[40px] cursor-pointer"
                               src={Tick}
@@ -124,6 +121,6 @@ function Approval() {
       </div>
     </div>
   );
-}
+};
 
 export default Approval;
