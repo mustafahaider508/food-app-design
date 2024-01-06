@@ -21,6 +21,8 @@ import {
   removeApprovals,
   updateApprovals,
 } from "@/store/reducers/approval";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Approval = () => {
   const dispatch = useAppDispatch();
@@ -59,12 +61,14 @@ const Approval = () => {
     });
 
     dispatch(updateApprovals({ id: docs.reel_id, status: "Accepted" }));
+    toast.success("Approved Successfully");
   };
 
   const handelDeleted = async (docs: any) => {
     const del = doc(db, "Reels", docs.reel_id);
     await deleteDoc(del);
     dispatch(removeApprovals({ id: docs.reel_id }));
+    toast.success("Deleted");
   };
 
   useEffect(() => {
@@ -75,6 +79,7 @@ const Approval = () => {
 
   return (
     <div>
+      <ToastContainer />
       {approval == null ? (
         <div className=" flex items-center justify-center h-screen">
           <div role="status">
