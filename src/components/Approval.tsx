@@ -11,9 +11,20 @@ import db from "../../db";
 import VideoThumbnail from "../components/VideoThumbnail";
 import VideoThumbnails from "../components/VideoThumbnail";
 import VideoThumbnailComp from "../components/VideoThumbnail";
+import MyModal from "./Modal";
 
 const Approval = () => {
   const [reels, setReels] = useState([]);
+  let [isOpen, setIsOpen] = useState(false);
+  let [video, setVideo] = useState<any>();
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
 
   const handleReels = async () => {
     try {
@@ -83,12 +94,18 @@ const Approval = () => {
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                           {ele.user_name == null ? "No Name" : ele.user_name}
                         </td>
-                        <td className="whitespace-nowrap  cursor-pointer px-3 py-4 text-sm text-gray-500">
+                        <td
+                          onClick={() => {
+                            setVideo(ele.video_url);
+                            openModal();
+                          }}
+                          className="whitespace-nowrap  cursor-pointer px-3 py-4 text-sm text-gray-500"
+                        >
                           <video
                             id="video1"
                             width="50"
                             height="50"
-                            className=" bg-slate-300 "
+                            className=" bg-slate-200  "
                           >
                             <source src={ele.video_url} type="video/mp4" />
                           </video>
@@ -119,6 +136,14 @@ const Approval = () => {
           </div>
         </div>
       </div>
+
+      <MyModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        openModal={openModal}
+        closeModal={closeModal}
+        video={video}
+      />
     </div>
   );
 };

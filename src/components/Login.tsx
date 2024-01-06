@@ -42,7 +42,7 @@ const Login = () => {
       if (email === DecryptEmail && password == DecryptPass) {
         router.push("/approval");
       } else {
-        toast.error("invalid credentials");
+        toast.error("Invalid credentials");
       }
     }
   };
