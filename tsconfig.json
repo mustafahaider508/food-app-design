@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/Approval.tsx",
-    "src/components/VideoThumbnail.jsx"
+    "src/components/VideoThumbnail.jsx",
+    "src/components/jwtService.js"
   ],
   "exclude": ["node_modules"]
 }

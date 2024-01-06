@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import CryptoJS from "crypto-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getToken } from "../../jwtService";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -29,7 +31,7 @@ const Login = () => {
   );
   var DecryptPass = bytes1.toString(CryptoJS.enc.Utf8);
 
-  const handelSubmit = (e: any) => {
+  const handelSubmit = async (e: any) => {
     e.preventDefault();
     if (!email && !password) {
       setErrorEmail(true);
@@ -40,6 +42,7 @@ const Login = () => {
       setErrorPass(true);
     } else {
       if (email === DecryptEmail && password == DecryptPass) {
+        Cookies.set("token", cipherEmail, {});
         router.push("/approval");
       } else {
         toast.error("Invalid credentials");
