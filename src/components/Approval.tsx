@@ -8,9 +8,6 @@ import Tick from "../../public/tick.png";
 import Cross from "../../public/Cross.png";
 import { collection, getDocs } from "firebase/firestore";
 import db from "../../db";
-import VideoThumbnail from "../components/VideoThumbnail";
-import VideoThumbnails from "../components/VideoThumbnail";
-import VideoThumbnailComp from "../components/VideoThumbnail";
 import MyModal from "./Modal";
 
 const Approval = () => {
