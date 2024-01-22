@@ -46,7 +46,7 @@ const Approval = () => {
     try {
       const docSnap = await getDocs(collection(db, "Reels"));
       const data: any = docSnap.docs.map((doc) => doc.data());
-      const filterReels = data?.filter((ele: any) => ele.status == "Pending");
+      const filterReels = data?.filter((ele: any) => ele.status == "pending");
 
       dispatch(setApprovals(filterReels));
     } catch (error: any) {
