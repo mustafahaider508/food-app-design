@@ -12,6 +12,7 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  addDoc,
 } from "firebase/firestore";
 import db from "../../db";
 import MyModal from "./Modal";
@@ -23,12 +24,14 @@ import {
 } from "@/store/reducers/approval";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Input from "./Input";
 
 const Approval = () => {
   const dispatch = useAppDispatch();
-  // const [reels, setReels] = useState([]);
   let [isOpen, setIsOpen] = useState(false);
   let [video, setVideo] = useState<any>();
+  const [formData, setFormData] = useState<any>("");
+  const [error, setError] = useState(false);
 
   const { approval } = useAppSelector(
     (state: RootState) => state.approvalSlice
@@ -41,6 +44,19 @@ const Approval = () => {
   function openModal() {
     setIsOpen(true);
   }
+
+  const handelAddLink = async () => {
+    if (formData == "") {
+      setError(true);
+    } else {
+      const docRef = await addDoc(collection(db, "Reels"), {
+        video_url: formData,
+      });
+      setError(false);
+      setFormData("");
+      toast.success("Link Added Successfully");
+    }
+  };
 
   const handleReels = async () => {
     try {
@@ -74,8 +90,6 @@ const Approval = () => {
   useEffect(() => {
     handleReels();
   }, []);
-
-  console.log("approval", approval);
 
   return (
     <div>
@@ -113,6 +127,13 @@ const Approval = () => {
               <Image className="w-full" src={Right} alt="img" />
             </div>
           </div>
+
+          <Input
+            formData={formData}
+            setFormData={setFormData}
+            handelAddLink={handelAddLink}
+            error={error}
+          />
 
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="mt-8 flow-root">
