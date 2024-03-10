@@ -49,8 +49,8 @@ const Approval = () => {
     if (formData == "") {
       setError(true);
     } else {
-      const docRef = await addDoc(collection(db, "Reels"), {
-        video_url: formData,
+      const docRef = await addDoc(collection(db, "Youtube"), {
+        url: formData,
       });
       setError(false);
       setFormData("");
